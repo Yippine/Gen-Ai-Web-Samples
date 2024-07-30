@@ -1,5 +1,3 @@
-# Gen AI Web Demo
-
 # Fashion Fortune Predictor 時尚運勢預測器
 
 https://github.com/user-attachments/assets/24597e29-93bb-411e-921f-b3f5a80c37bf
