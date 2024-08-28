@@ -10,25 +10,25 @@ const CONFIG_PATH = path.join(CONFIG_DIR, "config.ini");
 fs.ensureDirSync(CONFIG_DIR);
 
 function readConfig() {
-    if (fs.existsSync(CONFIG_PATH)) {
-        return ini.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
-    }
-    return {};
+  if (fs.existsSync(CONFIG_PATH)) {
+    return ini.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
+  }
+  return {};
 }
 
 function writeConfig(config) {
-    fs.writeFileSync(CONFIG_PATH, ini.stringify(config));
+  fs.writeFileSync(CONFIG_PATH, ini.stringify(config));
 }
 
 module.exports = {
-    getConfig: (key) => {
-        const config = readConfig();
-        return key ? config[key] : config;
-    },
-    setConfig: (key, value) => {
-        const config = readConfig();
-        config[key] = value;
-        writeConfig(config);
-    },
-    CONFIG_DIR,
+  getConfig: (key) => {
+    const config = readConfig();
+    return key ? config[key] : config;
+  },
+  setConfig: (key, value) => {
+    const config = readConfig();
+    config[key] = value;
+    writeConfig(config);
+  },
+  CONFIG_DIR,
 };

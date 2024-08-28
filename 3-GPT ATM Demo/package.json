@@ -1,24 +1,25 @@
 {
-    "name": "gpt-atm-demo",
-    "version": "1.0.0",
-    "private": true,
-    "scripts": {
-        "start": "concurrently \"cd client && npm run preview\" \"node server/server.js\"",
-        "dev": "concurrently \"cd client && npm run dev\" \"nodemon server/server.js\"",
-        "build": "cd client && npm run build",
-        "lint": "eslint .",
-        "format": "prettier --write ."
-    },
-    "dependencies": {
-        "express": "^4.19.2",
-        "fs-extra": "^11.2.0",
-        "ini": "^4.1.3",
-        "multer": "^1.4.5-lts.1"
-    },
-    "devDependencies": {
-        "concurrently": "^7.6.0",
-        "eslint": "^8.34.0",
-        "nodemon": "^3.1.4",
-        "prettier": "^2.8.4"
-    }
+  "name": "gpt-atm-demo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "atm": "concurrently \"npm run lint\" \"npm run format\" \"npm run dev\"",
+    "start": "concurrently \"cd client && npm run preview\" \"node server/server.js\"",
+    "dev": "concurrently \"cd client && npm run dev\" \"nodemon server/server.js\"",
+    "build": "cd client && npm run build",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "fs-extra": "^11.2.0",
+    "ini": "^4.1.3",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "eslint": "^8.34.0",
+    "nodemon": "^3.1.4",
+    "prettier": "^2.8.4"
+  }
 }
