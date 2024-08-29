@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "atm": "concurrently \"npm run lint\" \"npm run format\" \"npm run dev\"",
-    "start": "concurrently \"cd client && npm run preview\" \"node server/server.js\"",
-    "dev": "concurrently \"cd client && npm run dev\" \"nodemon server/server.js\"",
-    "build": "cd client && npm run build",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build": "cd client && npm run build",
+    "dev": "concurrently \"cd client && npm run dev\" \"nodemon server/server.js\"",
+    "start": "concurrently \"cd client && npm run build && npm run preview\" \"node server/server.js\"",
+    "setup": "npm install && cd client && npm install && cd ..",
+    "check": "npm run lint && npm run format",
+    "go": "clear && npm run setup && npm run check && npm run dev",
+    "deploy": "clear && npm run setup && npm run check && npm run build && npm start"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -17,8 +20,12 @@
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@rushstack/eslint-patch": "^1.10.4",
     "concurrently": "^7.6.0",
-    "eslint": "^8.34.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.27.0",
+    "globals": "^15.9.0",
     "nodemon": "^3.1.4",
     "prettier": "^2.8.4"
   }

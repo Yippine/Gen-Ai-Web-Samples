@@ -20,8 +20,8 @@ app.get("/api/settings", (req, res) => {
   try {
     const config = ini.parse(fs.readFileSync(iniPath, "utf-8"));
     res.json({
-      username: config.username || "",
-      botName: config.botName || "ATM",
+      userName: config.userName || "User",
+      botName: config.botName || "GPT ATM",
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to read settings" });
@@ -31,11 +31,11 @@ app.get("/api/settings", (req, res) => {
 // 保存設定
 app.post("/api/settings", (req, res) => {
   try {
-    const { username, botName } = req.body;
+    const { userName, botName } = req.body;
     const config = ini.parse(
       fs.existsSync(iniPath) ? fs.readFileSync(iniPath, "utf-8") : ""
     );
-    config.username = username;
+    config.userName = userName;
     config.botName = botName;
     fs.writeFileSync(iniPath, ini.stringify(config));
     res.json({ success: true });
@@ -80,7 +80,7 @@ app.get("*", (req, res) => {
 });
 
 // 錯誤處理中間件
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
 });

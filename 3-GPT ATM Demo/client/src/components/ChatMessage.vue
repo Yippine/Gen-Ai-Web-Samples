@@ -3,14 +3,14 @@
     <div :class="['flex items-center mb-2', isUser ? 'flex-row-reverse' : 'flex-row']">
       <div
         :class="[
-          'w-8 h-8 rounded-full flex items-center justify-center',
+          'w-8 h-8 p-[1.36rem] rounded-full flex items-center justify-center',
           isUser ? 'bg-[#24a09a]' : 'bg-gray-300'
         ]"
       >
         <i :class="['fas', isUser ? 'fa-user' : 'fa-robot']"></i>
       </div>
       <span :class="['mx-2', isUser ? 'text-right' : 'text-left']">{{
-        isUser ? username : 'ATM'
+        isUser ? userName : botName
       }}</span>
     </div>
     <div
@@ -36,10 +36,21 @@ export default {
       type: Boolean,
       default: false
     },
-    username: {
+    userName: {
       type: String,
       default: 'User'
+    },
+    botName: {
+      type: String,
+      default: 'GPT ATM'
     }
   }
 }
 </script>
+
+<style scoped>
+.break-words {
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+</style>

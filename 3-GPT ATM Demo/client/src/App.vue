@@ -28,7 +28,8 @@
         :key="index"
         :message="msg.text"
         :isUser="msg.isUser"
-        :username="username"
+        :userName="userName"
+        :botName="botName"
       />
     </div>
 
@@ -43,7 +44,6 @@
         @input="adjustTextareaHeight"
         ref="messageInput"
         rows="1"
-        maxlength="500"
         :disabled="isWaitingResponse"
       ></textarea>
 
@@ -85,7 +85,7 @@ import ChatMessage from './components/ChatMessage.vue'
 import SettingsPanel from './components/SettingsPanel.vue'
 
 const MAX_ROWS = 5
-const LINE_HEIGHT = 20
+const LINE_HEIGHT = 48
 
 export default {
   name: 'App',
@@ -104,19 +104,20 @@ export default {
     const textareaRef = ref(null)
     const messageInput = ref(null)
     const isWaitingResponse = ref(false)
-    const username = ref('User')
+    const userName = ref('User')
+    const botName = ref('GPT ATM')
 
     const sendMessage = () => {
       if (inputText.value.trim() && !isWaitingResponse.value) {
         const userMessage = inputText.value.trim()
         messages.value.push({ text: userMessage, isUser: true })
         inputText.value = ''
-        adjustTextareaHeight()
+        resetTextareaHeight()
         scrollToBottom()
 
         isWaitingResponse.value = true
 
-        // 模擬 API 調用
+        // 模擬 API 呼叫
         setTimeout(() => {
           messages.value.push({ text: `Echo：${userMessage}`, isUser: false })
           scrollToBottom()
@@ -124,11 +125,6 @@ export default {
           nextTick(() => {
             if (messageInput.value) {
               messageInput.value.focus()
-              messageInput.value.style.height = 'auto'
-              messageInput.value.style.height = `${Math.min(
-                messageInput.value.scrollHeight,
-                MAX_ROWS * LINE_HEIGHT
-              )}px`
             }
           })
         }, 1000)
@@ -168,6 +164,14 @@ export default {
       textareaHeight.value = `${newHeight}px`
     }
 
+    const resetTextareaHeight = () => {
+      const textarea = messageInput.value
+      if (!textarea) return
+
+      textarea.style.height = `${LINE_HEIGHT}px`
+      textareaHeight.value = `${LINE_HEIGHT}px`
+    }
+
     const newline = (event) => {
       const textarea = event.target
       const cursorPosition = textarea.selectionStart
@@ -192,19 +196,22 @@ export default {
       }
     }
 
-    const loadUsername = async () => {
+    const loadSettings = async () => {
       try {
         const response = await fetch('/api/settings')
         const data = await response.json()
-        username.value = data.username || 'User'
+        userName.value = data.userName || 'User'
+        botName.value = data.botName || 'GPT ATM'
       } catch (error) {
-        console.error('Failed to load username:', error)
-        username.value = 'User'
+        console.error('Failed to load userName:', error)
+        userName.value = 'User'
+        botName.value = 'GPT ATM'
       }
     }
 
     const handleSettingsUpdated = (newSettings) => {
-      username.value = newSettings.username || 'User'
+      userName.value = newSettings.userName || 'User'
+      botName.value = newSettings.botName || 'GPT ATM'
     }
 
     onMounted(() => {
@@ -213,7 +220,7 @@ export default {
         chatContainer.value.addEventListener('scroll', checkScroll)
       }
       textareaRef.value = document.querySelector('textarea')
-      loadUsername()
+      loadSettings()
     })
 
     onUnmounted(() => {
@@ -225,6 +232,14 @@ export default {
 
     watch(messages, () => {
       scrollToBottom()
+    })
+
+    watch(inputText, (newValue) => {
+      if (newValue) {
+        adjustTextareaHeight()
+      } else {
+        resetTextareaHeight()
+      }
     })
 
     return {
@@ -243,7 +258,8 @@ export default {
       newline,
       messageInput,
       isWaitingResponse,
-      username,
+      userName,
+      botName,
       handleSettingsUpdated
     }
   }

@@ -4,13 +4,15 @@ const { getConfig, setConfig } = require("../utils/config-manager");
 
 router.get("/", (req, res) => {
   res.json({
-    username: getConfig("username") || "",
+    userName: getConfig("userName") || "",
+    botName: getConfig("botName") || "",
   });
 });
 
 router.post("/", (req, res) => {
-  const { username } = req.body;
-  setConfig("username", username);
+  const { userName, botName } = req.body;
+  setConfig("userName", userName);
+  setConfig("botName", botName);
   res.json({ success: true });
 });
 

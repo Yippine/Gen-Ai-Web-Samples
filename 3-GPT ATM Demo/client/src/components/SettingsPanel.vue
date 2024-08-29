@@ -20,9 +20,18 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">使用者名稱</label>
           <input
-            v-model="settings.username"
+            v-model="settings.userName"
             class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             placeholder="輸入使用者名稱"
+            @change="saveSettings"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">機器人名稱</label>
+          <input
+            v-model="settings.botName"
+            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+            placeholder="輸入機器人名稱"
             @change="saveSettings"
           />
         </div>
@@ -55,10 +64,11 @@ import { ref, onMounted, watch } from 'vue'
 
 export default {
   name: 'SettingsPanel',
-  emits: ['close'],
+  emits: ['close', 'settingsUpdated'],
   setup(props, { emit }) {
     const settings = ref({
-      username: ''
+      userName: '',
+      botName: ''
     })
     const selectedAPI = ref('ChatGPT')
     const apiKey = ref('')
@@ -68,6 +78,7 @@ export default {
         const response = await fetch('/api/settings')
         const data = await response.json()
         settings.value = data
+        console.log(`data: ${data}`)
       } catch (error) {
         console.error('Failed to load settings:', error)
       }
